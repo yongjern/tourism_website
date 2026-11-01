@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Create project folders",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"mkdir src\\app src\\components src\\data public"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Install and build",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"npm install && npm run lint && npm run build"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$eslint-stylish",
+				"$tsc"
+			],
+			"group": "build"
+		}
+	]
+}
