@@ -1,4 +1,4 @@
-export type Destination = {
+﻿export type Destination = {
   id: string;
   name: string;
   nameMs: string;
@@ -14,63 +14,37 @@ export type Destination = {
   stays: { name: string; distance: string; price: string }[];
   food: { label: string; range: string }[];
   transport: string[];
+  concern: string;
+  rating: number;
 };
 
+const makeDestination = (place: Omit<Destination, "hours" | "admission" | "stays" | "food" | "transport">): Destination => ({
+  hours: "Confirm before visit", admission: "Confirm before visit",
+  stays: [{ name: "Local accommodation", distance: "Check location", price: "Confirm current rates" }],
+  food: [{ label: "Local dining", range: "Prices vary" }], transport: ["Car", "E-hailing", "Guided tour"], ...place
+});
+
+const royalImage = "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1200&q=85";
+const townImage = "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=85";
+const cultureImage = "https://images.unsplash.com/photo-1533669955142-6a73332af4db?auto=format&fit=crop&w=1200&q=85";
+const natureImage = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=85";
+
 export const destinations: Destination[] = [
-  {
-    id: "pekan-royal-town", name: "Pekan Royal Town", nameMs: "Bandar Diraja Pekan", region: "Pekan",
-    category: "Royal Heritage", intro: "Walk through Pahang's royal capital, where palaces, museums and riverfront kampungs preserve centuries of courtly history.",
-    introMs: "Telusuri ibu kota diraja Pahang dengan istana, muzium dan kampung tepian sungai yang menyimpan sejarah berabad lamanya.",
-    image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1200&q=85", coordinates: [3.4935, 103.3896],
-    hours: "Tue–Sun · 9:00–17:00", admission: "From RM 5", activities: ["Sultan Abu Bakar Museum", "Royal Mosque trail", "Silk weaving demonstration"],
-    stays: [{ name: "Ancasa Royale Pekan", distance: "1.2 km", price: "From RM 190/night" }, { name: "Pekan Budget Hotel", distance: "2.1 km", price: "From RM 80/night" }],
-    food: [{ label: "Local breakfast", range: "RM 5–12" }, { label: "Traditional lunch", range: "RM 12–30" }], transport: ["Car", "Local taxi", "Bicycle", "River boat"]
-  },
-  {
-    id: "sungai-lembing", name: "Sungai Lembing", nameMs: "Sungai Lembing", region: "Kuantan",
-    category: "Historic Town", intro: "Once home to one of the world's deepest tin mines, this quiet valley town tells a remarkable industrial story.",
-    introMs: "Pekan lembah yang tenang ini pernah menempatkan salah sebuah lombong bijih timah terdalam di dunia.",
-    image: "https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1200&q=85", coordinates: [3.9167, 103.0369],
-    hours: "Daily · Best before 16:00", admission: "Museum from RM 2", activities: ["Mining Museum", "Heritage street walk", "Panorama Hill sunrise"],
-    stays: [{ name: "Casa Hill Resort", distance: "1.0 km", price: "From RM 145/night" }, { name: "Time Capsule Retreat", distance: "1.8 km", price: "From RM 120/night" }],
-    food: [{ label: "Market noodles", range: "RM 6–12" }, { label: "Local café meal", range: "RM 10–25" }], transport: ["Car", "Bus from Kuantan", "Motorcycle", "Bicycle"]
-  },
-  {
-    id: "pulau-keladi", name: "Pulau Keladi Cultural Village", nameMs: "Kampung Budaya Pulau Keladi", region: "Pekan",
-    category: "Living Culture", intro: "Meet the craft traditions of Pahang at the birthplace of statesman Tun Abdul Razak, surrounded by timber village homes.",
-    introMs: "Kenali tradisi kraf Pahang di tempat kelahiran negarawan Tun Abdul Razak, dikelilingi rumah kayu kampung.",
-    image: "https://images.unsplash.com/photo-1533669955142-6a73332af4db?auto=format&fit=crop&w=1200&q=85", coordinates: [3.4799, 103.3948],
-    hours: "Tue–Sun · 9:30–16:30", admission: "Free–RM 10", activities: ["Traditional weaving", "Village architecture", "Tun Razak memorial"],
-    stays: [{ name: "Ancasa Royale Pekan", distance: "4.2 km", price: "From RM 190/night" }],
-    food: [{ label: "Village snacks", range: "RM 3–8" }, { label: "Family meal", range: "RM 10–25" }], transport: ["Car", "E-hailing", "Bicycle"]
-  },
-  {
-    id: "kuala-lipis", name: "Kuala Lipis Heritage Trail", nameMs: "Jejak Warisan Kuala Lipis", region: "Lipis",
-    category: "Historic Town", intro: "Trace colonial-era railway history through former administrative buildings, shophouses and the grand old station.",
-    introMs: "Jejaki sejarah kereta api era kolonial melalui bangunan pentadbiran lama, rumah kedai dan stesen bersejarah.",
-    image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=85", coordinates: [4.1847, 102.0542],
-    hours: "Open daily · Daylight hours", admission: "Free", activities: ["Self-guided heritage trail", "Railway station visit", "Old town photography"],
-    stays: [{ name: "Lipis Plaza Hotel", distance: "0.7 km", price: "From RM 85/night" }, { name: "Star-Well Hotel", distance: "1.1 km", price: "From RM 75/night" }],
-    food: [{ label: "Kopitiam breakfast", range: "RM 5–10" }, { label: "Town restaurant", range: "RM 10–25" }], transport: ["KTM train", "Car", "Bus", "Walking"]
-  },
-  {
-    id: "taman-negara", name: "Taman Negara & Orang Asli Heritage", nameMs: "Taman Negara & Warisan Orang Asli", region: "Jerantut",
-    category: "Nature & Heritage", intro: "Experience one of the world's oldest rainforests while learning respectfully about the living knowledge of local communities.",
-    introMs: "Alami salah sebuah hutan hujan tertua di dunia sambil mengenali ilmu hidup komuniti tempatan dengan penuh hormat.",
-    image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=85", coordinates: [4.3824, 102.4013],
-    hours: "Daily · Permit required", admission: "Permit from RM 1", activities: ["Community-led visit", "Canopy walk", "River journey"],
-    stays: [{ name: "Mutiara Taman Negara", distance: "On-site", price: "From RM 320/night" }, { name: "Balai Serama Guesthouse", distance: "2.5 km", price: "From RM 170/night" }],
-    food: [{ label: "Floating restaurant", range: "RM 12–35" }, { label: "Resort dining", range: "RM 30–70" }], transport: ["Boat", "Bus to Jerantut", "Shuttle van", "Walking"]
-  },
-  {
-    id: "chenor", name: "Chenor Riverside Village", nameMs: "Kampung Tepian Sungai Chenor", region: "Maran",
-    category: "Living Culture", intro: "Slow down beside the Pahang River among traditional houses, fishing stories and enduring village foodways.",
-    introMs: "Nikmati suasana Sungai Pahang dengan rumah tradisional, kisah nelayan dan warisan makanan kampung.",
-    image: "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?auto=format&fit=crop&w=1200&q=85", coordinates: [3.4852, 102.6032],
-    hours: "Open daily · Visit respectfully", admission: "Free", activities: ["Riverside village walk", "Traditional food tasting", "Fishing experience"],
-    stays: [{ name: "Local homestay", distance: "In village", price: "From RM 70/night" }],
-    food: [{ label: "Village meal", range: "RM 8–20" }, { label: "River fish set", range: "RM 18–45" }], transport: ["Car", "Motorcycle", "Bicycle", "Boat"]
-  }
+  makeDestination({ id: "sultan-abu-bakar-museum", name: "Sultan Abu Bakar Museum", nameMs: "Muzium Sultan Abu Bakar", region: "Pekan", category: "Royal Heritage", intro: "A former royal palace presenting Pahang's royal history, archaeology and material culture—the strongest anchor for a Royal Pekan heritage route.", introMs: "Bekas istana diraja yang memaparkan sejarah diraja, arkeologi dan budaya kebendaan Pahang.", image: royalImage, coordinates: [3.4935, 103.3896], activities: ["Royal galleries", "Archaeology collection", "Palace architecture"], concern: "Collections and historic interiors require controlled lighting, humidity and visitor movement.", rating: 5 }),
+  makeDestination({ id: "sultan-abdullah-mosque-museum", name: "Sultan Abdullah Mosque Museum", nameMs: "Muzium Masjid Sultan Abdullah", region: "Pekan", category: "Royal Heritage", intro: "A former mosque adapted as a museum, combining Islamic architecture with interpretation of religion and royal customs in Pahang.", introMs: "Bekas masjid yang dijadikan muzium, menggabungkan seni bina Islam dengan adat agama dan diraja Pahang.", image: royalImage, coordinates: [3.4908, 103.3888], activities: ["Islamic architecture", "Royal customs exhibition", "Guided museum visit"], concern: "Adaptive reuse must preserve the building's religious character and architectural authenticity.", rating: 4.5 }),
+  makeDestination({ id: "tunku-azizah-craft-village", name: "Tunku Azizah Royal Craft Village", nameMs: "Kampung Kraf Diraja Tunku Azizah", region: "Pekan", category: "Living Culture", intro: "A living-heritage centre for Tenun Pahang Diraja where visitors connect finished textiles with their artisans and production processes.", introMs: "Pusat warisan hidup Tenun Pahang Diraja yang menghubungkan tekstil dengan penggiat serta proses pembuatannya.", image: cultureImage, coordinates: [3.4922, 103.3905], activities: ["Tenun Pahang weaving", "Meet local artisans", "Traditional craft shopping"], concern: "Commercialisation should not replace traditional techniques or reduce artisans to demonstrations alone.", rating: 5 }),
+  makeDestination({ id: "pulau-beram-museum", name: "Pulau Beram Museum", nameMs: "Muzium Pulau Beram", region: "Pekan", category: "Royal Heritage", intro: "Interprets Pahang beyond royal personalities through archaeology, settlements and the development of local society.", introMs: "Mentafsir Pahang melalui arkeologi, petempatan dan perkembangan masyarakat tempatan.", image: royalImage, coordinates: [3.5118, 103.4003], activities: ["Archaeology displays", "Settlement history", "Local society exhibition"], concern: "Greater bilingual interpretation and stronger links to nearby archaeological locations would improve its value.", rating: 4 }),
+  makeDestination({ id: "royal-mausoleum-precinct", name: "Pahang Royal Mausoleum & Abu Bakar Royal Mosque Precinct", nameMs: "Makam Diraja Pahang & Kompleks Masjid Diraja Abu Bakar", region: "Pekan", category: "Royal Heritage", intro: "A significant royal and religious landscape associated with the Pahang Sultanate, suited to respectful cultural tourism.", introMs: "Landskap diraja dan keagamaan penting berkaitan Kesultanan Pahang untuk pelancongan budaya yang menghormati adat.", image: royalImage, coordinates: [3.4874, 103.3914], activities: ["Royal history", "Mosque architecture", "Respectful precinct walk"], concern: "Dress, photography and access restrictions must be communicated clearly.", rating: 4 }),
+  makeDestination({ id: "lipis-heritage-museum", name: "Lipis Heritage Museum", nameMs: "Muzium Warisan Lipis", region: "Kuala Lipis", category: "Historic Town", intro: "In the former State Secretary's residence, the museum interprets Kuala Lipis during its years as Pahang's capital from 1898 to 1955.", introMs: "Di bekas kediaman Setiausaha Kerajaan, muzium ini mentafsir Kuala Lipis ketika menjadi ibu negeri Pahang dari 1898 hingga 1955.", image: townImage, coordinates: [4.1847, 102.0542], activities: ["Former capital history", "Colonial residence", "Museum galleries"], concern: "The building needs continuous maintenance because of its age and tropical climate.", rating: 4.5 }),
+  makeDestination({ id: "old-state-mosque", name: "Old State Mosque (Masjid Negeri Lama)", nameMs: "Masjid Negeri Lama", region: "Kuala Lipis", category: "Royal Heritage", intro: "Dating to 1888, this small timber mosque illustrates early Malay religious architecture and the importance of the Jelai River settlement.", introMs: "Masjid kayu kecil bertarikh 1888 ini menggambarkan seni bina agama Melayu awal dan kepentingan petempatan Sungai Jelai.", image: royalImage, coordinates: [4.1858, 102.0526], activities: ["Timber architecture", "Religious heritage", "Jelai River history"], concern: "Timber decay, fire risk and insensitive renovation are major conservation threats.", rating: 5 }),
+  makeDestination({ id: "kuala-lipis-railway-station", name: "Kuala Lipis Old Railway Station", nameMs: "Stesen Kereta Api Lama Kuala Lipis", region: "Kuala Lipis", category: "Historic Town", intro: "Represents rail transport's role in administration, migration and trade, and fits naturally into a walkable town trail.", introMs: "Mewakili peranan kereta api dalam pentadbiran, penghijrahan dan perdagangan serta sesuai dalam jejak bandar.", image: townImage, coordinates: [4.1821, 102.0559], activities: ["Railway heritage", "Old town walk", "Historic photography"], concern: "Modern railway development could weaken the historic setting if old and new structures are poorly integrated.", rating: 4 }),
+  makeDestination({ id: "clifford-school", name: "Clifford School", nameMs: "Sekolah Clifford", region: "Kuala Lipis", category: "Historic Town", intro: "A prominent colonial-era educational institution valued for its architecture, institutional history and alumni memories.", introMs: "Institusi pendidikan era kolonial yang bernilai kerana seni bina, sejarah institusi dan kenangan alumni.", image: townImage, coordinates: [4.1875, 102.0520], activities: ["Exterior architecture", "Education history", "Alumni heritage"], concern: "As an operating school, tourism must not disrupt school activities or student privacy.", rating: 4 }),
+  makeDestination({ id: "bukit-residen", name: "Bukit Residen & Former Pahang Club Precinct", nameMs: "Bukit Residen & Bekas Kelab Pahang", region: "Kuala Lipis", category: "Historic Town", intro: "A hill precinct reflecting British colonial administration and social organisation during Kuala Lipis's capital period.", introMs: "Kawasan bukit yang mencerminkan pentadbiran dan organisasi sosial kolonial British ketika Kuala Lipis menjadi ibu negeri.", image: townImage, coordinates: [4.1889, 102.0498], activities: ["Colonial precinct walk", "Town viewpoint", "Administrative history"], concern: "Some buildings may have restricted access; exterior interpretation and guided walks are therefore important.", rating: 4 }),
+  makeDestination({ id: "sungai-lembing-museum", name: "Sungai Lembing Museum", nameMs: "Muzium Sungai Lembing", region: "Kuantan", category: "Historic Town", intro: "In a former mining officer's residence, the museum documents the tin-mining community, machinery and social history.", introMs: "Di bekas kediaman pegawai lombong, muzium ini mendokumentasikan komuniti, jentera dan sejarah sosial perlombongan timah.", image: townImage, coordinates: [3.9167, 103.0369], activities: ["Mining galleries", "Community history", "Heritage street walk"], concern: "Displays should include workers' experiences and environmental impacts, not only corporate or technological history.", rating: 4.5 }),
+  makeDestination({ id: "sungai-lembing-mine", name: "Sungai Lembing Underground Mine", nameMs: "Lombong Bawah Tanah Sungai Lembing", region: "Kuantan", category: "Historic Town", intro: "An important industrial-heritage attraction offering direct engagement with Pahang's mining landscape in a distinctive tunnel environment.", introMs: "Tarikan warisan industri penting yang membawa pengunjung terus ke landskap perlombongan Pahang dalam persekitaran terowong.", image: townImage, coordinates: [3.9178, 103.0345], activities: ["Underground mine tour", "Industrial heritage", "Mining landscape"], concern: "Structural stability, flooding, ventilation and emergency procedures require strict monitoring.", rating: 5 }),
+  makeDestination({ id: "mat-kilau-tomb", name: "Mat Kilau Tomb, Pulau Tawar", nameMs: "Makam Mat Kilau, Pulau Tawar", region: "Jerantut", category: "Royal Heritage", intro: "Associated with Malay warrior Mat Kilau and resistance to British intervention, with strong historical, patriotic and educational value.", introMs: "Dikaitkan dengan pahlawan Melayu Mat Kilau dan penentangan terhadap campur tangan British.", image: royalImage, coordinates: [3.9348, 102.3738], activities: ["Mat Kilau history", "Patriotic heritage", "Reflective visit"], concern: "Interpretation should distinguish documented history from oral tradition and popular legend.", rating: 4.5 }),
+  makeDestination({ id: "kota-gelanggi", name: "Kota Gelanggi Cave Complex", nameMs: "Kompleks Gua Kota Gelanggi", region: "Jerantut", category: "Nature & Heritage", intro: "Combines limestone geology, archaeology, biodiversity and folklore as a compelling geotourism and archaeological destination.", introMs: "Menggabungkan geologi batu kapur, arkeologi, biodiversiti dan cerita rakyat sebagai destinasi geowarisan.", image: natureImage, coordinates: [3.9790, 102.4680], activities: ["Cave exploration", "Archaeology", "Geology and folklore"], concern: "Uncontrolled access can damage cave formations, archaeological deposits and wildlife habitats.", rating: 5 }),
+  makeDestination({ id: "bentong-gallery", name: "Bentong Gallery & Old Town", nameMs: "Galeri Bentong & Pekan Lama", region: "Bentong", category: "Historic Town", intro: "Introduces Bentong's development, communities and commercial history amid shophouses, markets and food traditions.", introMs: "Memperkenalkan pembangunan, komuniti dan sejarah perdagangan Bentong dalam landskap rumah kedai, pasar dan tradisi makanan.", image: townImage, coordinates: [3.5223, 101.9087], activities: ["Gallery visit", "Old town walk", "Market and food heritage"], concern: "Heritage façades may be lost through redevelopment, inappropriate signage and unsympathetic renovation.", rating: 4 })
 ];
 
 export const categories = ["All places", "Royal Heritage", "Living Culture", "Historic Town", "Nature & Heritage"] as const;
