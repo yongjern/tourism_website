@@ -2,6 +2,7 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Bot, ExternalLink, Languages, MessageCircle, RotateCcw, Send, X } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import type { ChatLanguage, ChatMessage } from "@/lib/chatbot";
 
 const ui = {
@@ -17,7 +18,7 @@ const ui = {
     language: "Change language",
     notice: "AI answers may be inaccurate. Confirm hours, prices and access before travel.",
     contact: "Contact human support",
-    typing: "Planning your answer…",
+    typing: "Generating response…",
     error: "I could not answer just now. Please try again.",
     prompts: ["Recommend heritage places", "Plan a 2-day trip", "How do I get around?"],
   },
@@ -33,7 +34,7 @@ const ui = {
     language: "Tukar bahasa",
     notice: "Jawapan AI mungkin kurang tepat. Sahkan waktu, harga dan akses sebelum perjalanan.",
     contact: "Hubungi bantuan manusia",
-    typing: "Sedang merancang jawapan…",
+    typing: "Sedang menjana jawapan…",
     error: "Saya tidak dapat menjawab sekarang. Sila cuba lagi.",
     prompts: ["Cadangkan tempat warisan", "Rancang perjalanan 2 hari", "Bagaimana cara bergerak?"],
   },
@@ -49,7 +50,7 @@ const ui = {
     language: "切换语言",
     notice: "AI 回答可能不准确。出发前请确认开放时间、价格和参观限制。",
     contact: "联系人工客服",
-    typing: "正在规划回答…",
+    typing: "正在生成回答…",
     error: "暂时无法回答，请稍后再试。",
     prompts: ["推荐文化遗产景点", "规划两天行程", "当地交通方式"],
   },
@@ -142,13 +143,15 @@ export default function TravelChatbot() {
       </header>
 
       <div className="chat-messages" ref={listRef} aria-live="polite">
-        <div className="chat-message assistant"><div className="chat-avatar"><Bot size={16}/></div><p>{t.welcome}</p></div>
+        <div className="chat-message assistant"><div className="chat-avatar"><Bot size={16}/></div><p className="chat-bubble">{t.welcome}</p></div>
         {!messages.length && <div className="chat-prompts">{t.prompts.map((prompt) => <button type="button" key={prompt} onClick={() => void sendMessage(prompt)}>{prompt}<span>↗</span></button>)}</div>}
         {messages.map((message, index) => <div className={`chat-message ${message.role}`} key={`${message.role}-${index}`}>
           {message.role === "assistant" && <div className="chat-avatar"><Bot size={16}/></div>}
-          <p>{message.content}</p>
+          {message.role === "assistant"
+            ? <div className="chat-bubble chat-markdown"><ReactMarkdown>{message.content}</ReactMarkdown></div>
+            : <p className="chat-bubble">{message.content}</p>}
         </div>)}
-        {loading && <div className="chat-message assistant chat-loading"><div className="chat-avatar"><Bot size={16}/></div><p><span/><span/><span/><i>{t.typing}</i></p></div>}
+        {loading && <div className="chat-message assistant chat-loading" role="status"><div className="chat-avatar"><Bot size={16}/></div><div className="chat-bubble"><span className="chat-dots" aria-hidden="true"><i/><i/><i/></span><span>{t.typing}</span></div></div>}
       </div>
 
       <div className="chat-composer">
