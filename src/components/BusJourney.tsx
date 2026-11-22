@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, BusFront, Languages, MapPin, Menu, Search, X } from "lucide-react";
 import { busRoutes } from "@/data/busRoutes";
 
@@ -74,9 +76,9 @@ export default function BusJourney() {
 
   return <main className="bus-page">
     <header className="topbar bus-topbar">
-      <a className="brand" href="/" aria-label="Warisan Pahang home"><img src="/logo-mark.svg" alt=""/><span><b>WARISAN</b><small>PAHANG</small></span></a>
+      <Link className="brand" href="/" aria-label="Warisan Pahang home"><Image src="/logo-mark.svg" alt="" width={32} height={38}/><span><b>WARISAN</b><small>PAHANG</small></span></Link>
       <nav className={menu ? "nav open" : "nav"}>
-        <a href="/">{t.back}</a>
+        <Link href="/">{t.back}</Link>
         <a href="#routes">{t.routes}</a>
         <a href="#guide">{t.guide}</a>
         <a href="https://bas.my/basmykuantan.php" target="_blank" rel="noreferrer">{t.source}</a>
@@ -120,6 +122,6 @@ export default function BusJourney() {
 
     <section className="bus-guide section" id="guide"><div className="bus-guide-mark"><BusFront size={44}/><span>BAS.MY</span></div><div><p className="eyebrow light">03 — {t.guide}</p><h2>{t.planning}</h2><p>{t.planningCopy}</p><a className="button gold" href="https://bas.my/basmykuantan.php" target="_blank" rel="noreferrer">{t.check}<ArrowUpRight size={17}/></a></div></section>
 
-    <footer><a className="brand inverse" href="/"><img src="/logo-mark.svg" alt=""/><span><b>WARISAN</b><small>PAHANG</small></span></a><p>{t.footer}</p><a className="footer-back" href="/"><ArrowLeft size={15}/>{t.back}</a></footer>
+    <footer><Link className="brand inverse" href="/"><Image src="/logo-mark.svg" alt="" width={32} height={38}/><span><b>WARISAN</b><small>PAHANG</small></span></Link><p>{t.footer}</p><Link className="footer-back" href="/"><ArrowLeft size={15}/>{t.back}</Link></footer>
   </main>;
 }
