@@ -93,7 +93,8 @@ export default function TravelChatbot() {
     const content = text.trim();
     if (!content || loading) return;
 
-    const nextMessages: ChatMessage[] = [...messages, { role: "user", content }].slice(-9);
+    const userMessage: ChatMessage = { role: "user", content };
+    const nextMessages = [...messages, userMessage].slice(-9);
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
@@ -106,7 +107,8 @@ export default function TravelChatbot() {
       });
       const data = await response.json() as { message?: string; error?: string };
       if (!response.ok || !data.message) throw new Error(data.error ?? "Chat request failed");
-      setMessages((current) => [...current, { role: "assistant", content: data.message! }]);
+      const assistantMessage: ChatMessage = { role: "assistant", content: data.message };
+      setMessages((current) => [...current, assistantMessage]);
     } catch (error) {
       console.error("Travel chat failed", error);
       setMessages((current) => [...current, { role: "assistant", content: t.error }]);
