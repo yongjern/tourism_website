@@ -9,26 +9,26 @@ const copy = {
   ms: { nav: ["Terokai", "Perjalanan", "Cerita", "Rancang lawatan"], eyebrow: "Jiwa pantai timur", titleA: "Cerita hidup", titleB: "di sini.", hero: "Jelajahi bandar diraja, kampung tepian sungai dan tradisi hidup di tengah negeri Pahang.", explore: "Terokai warisan", map: "Lihat peta warisan", featured: "15 tempat penuh sejarah", featuredSub: "Terokai warisan diraja, kolonial, industri, agama, arkeologi dan budaya hidup di seluruh Pahang.", all: "Semua tempat", details: "Lihat tempat", stays: "Penginapan berdekatan", food: "Panduan makanan", getting: "Cara ke sana", activity: "Aktiviti", concern: "Isu pemuliharaan", rating: "Potensi warisan", indicative: "Maklumat pelawat adalah anggaran — sahkan sebelum perjalanan", close: "Tutup", search: "Cari tempat", noResults: "Tiada tempat sepadan dengan carian anda.", mapLink: "Buka di OpenStreetMap", quote: "Pahang bukan sekadar tempat untuk dilihat. Ia sebuah cerita untuk diterokai.", footer: "Dicipta untuk perjalanan bermakna di Pahang." }
 };
 
-const mapBounds = { north: 4.1889, south: 3.4874, west: 101.9087, east: 103.4003 };
+const mapBounds = { north: 4.75, south: 2.45, west: 101.35, east: 103.5 };
 const mapOffsets: Record<string, [number, number]> = {
-  "sultan-abu-bakar-museum": [-48, -46],
-  "sultan-abdullah-mosque-museum": [-14, -66],
-  "tunku-azizah-craft-village": [22, -48],
-  "pulau-beram-museum": [48, -15],
-  "royal-mausoleum-precinct": [8, 10],
-  "lipis-heritage-museum": [-45, -42],
-  "old-state-mosque": [-12, -64],
-  "kuala-lipis-railway-station": [23, -44],
-  "clifford-school": [-32, -5],
-  "bukit-residen": [18, -4],
-  "sungai-lembing-museum": [-20, -30],
-  "sungai-lembing-mine": [22, 2],
+  "sultan-abu-bakar-museum": [-38, -24],
+  "sultan-abdullah-mosque-museum": [-12, -36],
+  "tunku-azizah-craft-village": [16, -25],
+  "pulau-beram-museum": [36, -5],
+  "royal-mausoleum-precinct": [0, 8],
+  "lipis-heritage-museum": [-36, -22],
+  "old-state-mosque": [-10, -36],
+  "kuala-lipis-railway-station": [20, -23],
+  "clifford-school": [-27, 7],
+  "bukit-residen": [13, 8],
+  "sungai-lembing-museum": [-17, -16],
+  "sungai-lembing-mine": [17, 9],
 };
 
-const getMapPosition = (place: Destination, index: number): CSSProperties => {
+const getMapPosition = (place: Destination): CSSProperties => {
   const [latitude, longitude] = place.coordinates;
-  const x = 20 + ((longitude - mapBounds.west) / (mapBounds.east - mapBounds.west)) * 60;
-  const y = 18 + ((mapBounds.north - latitude) / (mapBounds.north - mapBounds.south)) * 64;
+  const x = 16 + ((longitude - mapBounds.west) / (mapBounds.east - mapBounds.west)) * 66;
+  const y = 8 + ((mapBounds.north - latitude) / (mapBounds.north - mapBounds.south)) * 84;
   const [offsetX, offsetY] = mapOffsets[place.id] ?? [0, 0];
 
   return {
@@ -36,7 +36,6 @@ const getMapPosition = (place: Destination, index: number): CSSProperties => {
     top: `${y}%`,
     "--marker-x": `${offsetX}px`,
     "--marker-y": `${offsetY}px`,
-    "--marker-index": `"${index + 1}"`,
   } as CSSProperties;
 };
 
@@ -74,7 +73,7 @@ export default function HeritageExplorer() {
       {!visible.length && <p className="empty">{t.noResults}</p>}
     </section>
 
-    <section className="map-section" id="map"><div className="map-copy"><p className="eyebrow light">02 — {lang === "en" ? "Find your way" : "Cari perjalanan"}</p><h2>{lang === "en" ? "Heritage, across the state." : "Warisan di seluruh negeri."}</h2><p>{lang === "en" ? "From the royal riverlands to old railway towns, every route reveals another layer of Pahang." : "Dari lembah sungai diraja ke bandar kereta api lama, setiap laluan menyingkap lapisan baharu Pahang."}</p></div><div className="map-visual"><div className="map-lines"/>{destinations.map((place, i) => <button className="map-marker" key={place.id} style={getMapPosition(place, i)} onClick={() => setSelected(place)} aria-label={`${i + 1}. ${lang === "en" ? place.name : place.nameMs}, ${place.region}`}><span>{i + 1}</span><small><b>{lang === "en" ? place.name : place.nameMs}</b>{place.region}</small></button>)}</div></section>
+    <section className="map-section" id="map"><div className="map-copy"><p className="eyebrow light">02 — {lang === "en" ? "Find your way" : "Cari perjalanan"}</p><h2>{lang === "en" ? "Heritage, across the state." : "Warisan di seluruh negeri."}</h2><p>{lang === "en" ? "From the royal riverlands to old railway towns, every route reveals another layer of Pahang." : "Dari lembah sungai diraja ke bandar kereta api lama, setiap laluan menyingkap lapisan baharu Pahang."}</p></div><div className="map-visual"><div className="map-lines"/>{destinations.map((place, i) => <button className="map-marker" key={place.id} style={getMapPosition(place)} onClick={() => setSelected(place)} aria-label={`${i + 1}. ${lang === "en" ? place.name : place.nameMs}, ${place.region}`}><span><b aria-hidden="true">{i + 1}</b></span><small><b>{lang === "en" ? place.name : place.nameMs}</b>{place.region}</small></button>)}</div></section>
 
     <section className="story" id="stories"><div className="story-image"/><blockquote>“{t.quote}”<span>— {lang === "en" ? "A journey shaped by memory" : "Perjalanan dibentuk oleh kenangan"}</span></blockquote></section>
 

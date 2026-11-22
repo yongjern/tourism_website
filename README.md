@@ -11,9 +11,21 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+## AI travel guide
+
+The floating travel guide works immediately with curated site data. To enable broader AI answers, configure any OpenAI-compatible chat endpoint on the server:
+
+```text
+AI_CHAT_API_URL=https://provider.example/v1/chat/completions
+AI_CHAT_API_KEY=replace-with-a-server-secret
+AI_CHAT_MODEL=replace-with-a-model-id
+```
+
+The API key is used only by the server route. Chat history remains in the current browser session and is not persisted by this application.
+
 ## Deploy
 
-Import this folder into Vercel. No environment variables or external database are required.
+Import this folder into Vercel. Environment variables are optional unless broader AI answers are enabled. No external database is required.
 
 ## Data notes
 
