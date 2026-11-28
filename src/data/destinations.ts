@@ -9,6 +9,8 @@ export type Destination = {
   intro: string;
   introMs: string;
   image: string;
+  uncroppedImage?: boolean;
+  detailPhoto?: { src: string; alt: Localized<string> };
   coordinates: [number, number];
   hours: string;
   admission: string;
@@ -40,7 +42,6 @@ const makeDestination = (place: Omit<Destination, "hours" | "admission" | "stays
 
 const royalImage = "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1200&q=85";
 const townImage = "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=85";
-const cultureImage = "https://images.unsplash.com/photo-1533669955142-6a73332af4db?auto=format&fit=crop&w=1200&q=85";
 const natureImage = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=85";
 
 export const destinations: Destination[] = [
@@ -75,7 +76,7 @@ export const destinations: Destination[] = [
     id: "tunku-azizah-craft-village", name: "Tunku Azizah Royal Craft Village", nameMs: "Perkampungan Kraf Diraja Tunku Azizah", region: "Pekan", category: "Living Culture",
     intro: "This craft village in Pulau Keladi, Pekan, showcases Tenun Pahang Diraja weaving, songket and traditional handicrafts.",
     introMs: "Perkampungan kraf di Pulau Keladi, Pekan ini mengetengahkan Tenun Pahang Diraja, songket dan kraftangan tradisional.",
-    image: cultureImage, coordinates: [3.4922, 103.3905],
+    image: "/media/tunku-azizah-craft-village.webp", uncroppedImage: true, coordinates: [3.4922, 103.3905],
     background: {
       en: "The village grew out of the Pulau Keladi Cultural Complex. Its weaving centre helps preserve Tenun Pahang Diraja, while heritage houses connect the craft village to Pekan’s history.",
       ms: "Perkampungan ini dibangunkan daripada Kompleks Budaya Pulau Keladi. Pusat tenunannya membantu memelihara Tenun Pahang Diraja, manakala rumah warisan di sini memperkenalkan sejarah Pekan.",
@@ -109,7 +110,7 @@ export const destinations: Destination[] = [
       en: "Communities along Pahang’s rivers and coast used boats to travel, fish and trade. The gallery displays decorated boats and full-size replicas that show how different craft met those needs.",
       ms: "Masyarakat di sepanjang sungai dan pesisir Pahang menggunakan perahu untuk bergerak, menangkap ikan dan berdagang. Galeri ini mempamerkan perahu berhias dan replika bersaiz sebenar yang menunjukkan kepelbagaian kegunaannya.",
     },
-    image: royalImage, coordinates: [3.5118, 103.4003],
+    image: "/media/pulau-beram-museum.webp", coordinates: [3.5118, 103.4003],
     activities: ["Compare traditional Malay boats and sampans", "Learn how waterways shaped everyday life in Pahang"],
     activitiesMs: ["Bandingkan perahu tradisional Melayu dan sampan", "Ketahui peranan sungai dalam kehidupan harian masyarakat Pahang"],
     visitorInfo: {
@@ -127,7 +128,7 @@ export const destinations: Destination[] = [
       en: "Pekan has long been a seat of the Pahang Sultanate. Its royal burial sites and mosques show how Islamic practices have shaped Malay court life and customs.",
       ms: "Pekan telah lama menjadi pusat Kesultanan Pahang. Makam dan masjid dirajanya memperlihatkan pengaruh amalan Islam terhadap kehidupan dan adat istana Melayu.",
     },
-    image: royalImage, coordinates: [3.4874, 103.3914],
+    image: "/media/royal-mausoleum.webp", coordinates: [3.4874, 103.3914],
     activities: ["View the mosque architecture from permitted areas", "Learn about the Pahang Sultanate and its burial traditions"],
     activitiesMs: ["Perhatikan seni bina masjid dari kawasan yang dibenarkan", "Kenali Kesultanan Pahang dan tradisi pemakaman diraja"],
     visitorInfo: {
@@ -165,7 +166,7 @@ export const destinations: Destination[] = [
       en: "Founded during British rule and named after Hugh Clifford, the school has educated generations of local students. Its colonial-era buildings are part of the town’s educational heritage.",
       ms: "Ditubuhkan semasa pemerintahan British dan dinamakan sempena Hugh Clifford, sekolah ini telah mendidik beberapa generasi pelajar tempatan. Bangunan era kolonialnya merupakan sebahagian daripada warisan pendidikan bandar ini.",
     },
-    image: townImage, coordinates: [4.1875, 102.0520],
+    image: "/media/clifford-school.webp", coordinates: [4.1875, 102.0520],
     activities: ["View the historic exterior from public areas", "Learn about the history of education in Kuala Lipis"],
     activitiesMs: ["Lihat bahagian luar bangunan bersejarah dari kawasan awam", "Ketahui sejarah pendidikan di Kuala Lipis"],
     visitorInfo: {
@@ -183,7 +184,8 @@ export const destinations: Destination[] = [
       en: "The house, built in 1922, served as the British Resident’s official residence. The former Pahang Club was a social gathering place for the British community. Together, the sites tell different sides of colonial life in Kuala Lipis.",
       ms: "Rumah yang dibina pada tahun 1922 ini pernah menjadi kediaman rasmi Residen British. Kelab Pahang pula menjadi tempat pertemuan masyarakat British. Kedua-dua tapak ini memperlihatkan sisi berbeza kehidupan zaman kolonial di Kuala Lipis.",
     },
-    image: townImage, coordinates: [4.1889, 102.0498],
+    image: "/media/bukit-residen.webp", coordinates: [4.1889, 102.0498],
+    detailPhoto: { src: "/media/former-pahang-club.webp", alt: { en: "Former Pahang Club building", ms: "Bangunan bekas Kelab Pahang" } },
     activities: ["View the heritage buildings from public areas", "Look out over Kuala Lipis from accessible viewpoints"],
     activitiesMs: ["Lihat bangunan warisan dari kawasan awam", "Nikmati pemandangan Kuala Lipis dari tempat tinjau yang boleh diakses"],
     visitorInfo: {

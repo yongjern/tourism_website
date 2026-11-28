@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, type CSSProperties } from "react";
 import { Bus, CarTaxiFront, ChevronDown, Clock3, ExternalLink, Languages, MapPin, Menu, Search, Ticket, TrainFront, UtensilsCrossed, X } from "lucide-react";
@@ -9,6 +10,13 @@ const copy = {
   en: { nav: ["Discover", "Journeys", "Stories", "Plan your visit"], eyebrow: "The soul of the east coast", titleA: "Stories live", titleB: "here.", hero: "Journey through royal towns, riverside villages and living traditions in the heart of Pahang.", explore: "Explore the heritage", map: "View heritage map", featured: "15 places with a past", featuredSub: "Explore royal, colonial, industrial, religious, archaeological and living-cultural heritage across Pahang.", all: "All places", details: "View place", stays: "Stay nearby", food: "Food guide", getting: "Getting there", activity: "Things to experience", concern: "Conservation concern", rating: "Heritage potential", indicative: "Visitor information is indicative — confirm before travel", close: "Close", search: "Search a place", noResults: "No places match your search.", mapLink: "Open in OpenStreetMap", quote: "Pahang is not only a place to see. It is a story to enter.", footer: "Made for thoughtful journeys through Pahang." },
   ms: { nav: ["Terokai", "Perjalanan", "Cerita", "Rancang lawatan"], eyebrow: "Jiwa pantai timur", titleA: "Cerita hidup", titleB: "di sini.", hero: "Jelajahi bandar diraja, kampung tepian sungai dan tradisi hidup di tengah negeri Pahang.", explore: "Terokai warisan", map: "Lihat peta warisan", featured: "15 tempat penuh sejarah", featuredSub: "Terokai warisan diraja, kolonial, industri, agama, arkeologi dan budaya hidup di seluruh Pahang.", all: "Semua tempat", details: "Lihat tempat", stays: "Penginapan berdekatan", food: "Panduan makanan", getting: "Cara ke sana", activity: "Aktiviti", concern: "Isu pemuliharaan", rating: "Potensi warisan", indicative: "Maklumat pelawat adalah anggaran — sahkan sebelum perjalanan", close: "Tutup", search: "Cari tempat", noResults: "Tiada tempat sepadan dengan carian anda.", mapLink: "Buka di OpenStreetMap", quote: "Pahang bukan sekadar tempat untuk dilihat. Ia sebuah cerita untuk diterokai.", footer: "Dicipta untuk perjalanan bermakna di Pahang." }
 };
+
+function photoBackground(place: Destination, gradient: string): CSSProperties {
+  return {
+    backgroundImage: `${gradient}, url('${place.image}')`,
+    ...(place.uncroppedImage && { backgroundSize: "cover, contain", backgroundRepeat: "no-repeat", backgroundColor: "var(--ink)" }),
+  };
+}
 
 const mapBounds = { north: 4.75, south: 2.45, west: 101.35, east: 103.5 };
 const mapOffsets: Record<string, [number, number]> = {
@@ -68,7 +76,7 @@ export default function HeritageExplorer() {
 
     <section className="places section">
       {visible.map((place, index) => <article className="place-card" key={place.id} onClick={() => setSelected(place)} tabIndex={0} onKeyDown={(e) => e.key === "Enter" && setSelected(place)}>
-        <div className="card-image" style={{backgroundImage: `linear-gradient(180deg, transparent 45%, rgba(15,28,23,.78)), url('${place.image}')`}}><span className="card-number">{String(index + 1).padStart(2, "0")}</span><span className="card-category">{place.category}</span><div className="card-location"><MapPin size={14}/>{place.region}, Pahang</div></div>
+        <div className="card-image" style={photoBackground(place, "linear-gradient(180deg, transparent 45%, rgba(15,28,23,.78))")}><span className="card-number">{String(index + 1).padStart(2, "0")}</span><span className="card-category">{place.category}</span><div className="card-location"><MapPin size={14}/>{place.region}, Pahang</div></div>
         <div className="card-body"><h3>{lang === "en" ? place.name : place.nameMs}</h3><p>{lang === "en" ? place.intro : place.introMs}</p><div className="card-meta"><span><Ticket size={16}/>{t.rating}: {place.rating}/5</span><span><Clock3 size={16}/>{place.hours.split("·")[0]}</span></div><button>{t.details}<span>↗</span></button></div>
       </article>)}
       {!visible.length && <p className="empty">{t.noResults}</p>}
@@ -92,7 +100,7 @@ export default function HeritageExplorer() {
     {selected && <div className="modal-backdrop" onMouseDown={() => setSelected(null)}>
       <aside className="detail" onMouseDown={(e) => e.stopPropagation()}>
         <button className="close" onClick={() => setSelected(null)} aria-label={t.close}><X/></button>
-        <div className="detail-hero" style={{backgroundImage:`linear-gradient(180deg,transparent,rgba(11,28,22,.85)),url('${selected.image}')`}}><span>{selected.category}</span><h2>{lang === "en" ? selected.name : selected.nameMs}</h2><p><MapPin size={16}/>{selected.region}, Pahang</p></div>
+        <div className="detail-hero" style={photoBackground(selected, "linear-gradient(180deg, transparent, rgba(11,28,22,.85))")}><span>{selected.category}</span><h2>{lang === "en" ? selected.name : selected.nameMs}</h2><p><MapPin size={16}/>{selected.region}, Pahang</p></div>
         <div className="detail-body">
           <div className="price-line"><b>{t.rating}: {selected.rating}/5</b><span><Clock3 size={16}/>{lang === "ms" && selected.visitorInfo ? "Sahkan sebelum lawatan" : selected.hours}</span></div>
           <p>{lang === "en" ? selected.intro : selected.introMs}</p>
@@ -100,6 +108,14 @@ export default function HeritageExplorer() {
             <h3>{lang === "en" ? "History and background" : "Sejarah dan latar belakang"}</h3>
             <p>{selected.background[lang]}</p>
           </>}
+          {selected.detailPhoto && <Image
+            src={selected.detailPhoto.src}
+            alt={selected.detailPhoto.alt[lang]}
+            width={1024}
+            height={768}
+            unoptimized
+            className="mt-6 block h-auto w-full"
+          />}
           <h3>{t.concern}</h3><p>{lang === "ms" ? selected.concernMs ?? selected.concern : selected.concern}</p>
           <h3>{t.activity}</h3>
           <ul>{(lang === "ms" ? selected.activitiesMs ?? selected.activities : selected.activities).map(x => <li key={x}>{x}</li>)}</ul>
