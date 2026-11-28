@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, type CSSProperties } from "react";
 import { Bus, CarTaxiFront, ChevronDown, Clock3, ExternalLink, Languages, MapPin, Menu, Search, Ticket, TrainFront, UtensilsCrossed, X } from "lucide-react";
 import { categories, destinations, type Destination } from "@/data/destinations";
@@ -79,8 +80,57 @@ export default function HeritageExplorer() {
 
     <section className="plan section" id="plan"><div><p className="eyebrow">03 — {lang === "en" ? "Plan with confidence" : "Rancang dengan yakin"}</p><h2>{lang === "en" ? "Everything for the road." : "Segalanya untuk perjalanan."}</h2></div><div className="plan-grid"><div><Bus/><h3><a href="/journeys/bus">{lang === "en" ? "Road & bus" : "Jalan & bas"}</a></h3><p>{lang === "en" ? "Browse the published MyBus routes from Kuantan before you travel." : "Lihat laluan MyBus yang diterbitkan dari Kuantan sebelum bergerak."}</p></div><div><TrainFront/><h3>{lang === "en" ? "Rail journeys" : "Perjalanan kereta api"}</h3><p>{lang === "en" ? "The Jungle Railway serves inland towns including Kuala Lipis and Jerantut." : "Laluan Kereta Api Hutan melalui Kuala Lipis dan Jerantut."}</p></div><div><CarTaxiFront/><h3>{lang === "en" ? "Taxi & e-hailing" : "Teksi & e-panggilan"}</h3><p>{lang === "en" ? "Taxis and e-hailing services provide flexible connections within major towns." : "Teksi dan perkhidmatan e-panggilan menyediakan perjalanan fleksibel di bandar utama."}</p></div></div></section>
 
-    <footer><div className="brand inverse"><img src="/logo-mark.svg" alt=""/><span><b>WARISAN</b><small>PAHANG</small></span></div><p>{t.footer}</p><p>© 2026 · Malaysia</p></footer>
+    <footer>
+      <div className="brand inverse"><img src="/logo-mark.svg" alt=""/><span><b>WARISAN</b><small>PAHANG</small></span></div>
+      <div>
+        <p>{t.footer}</p>
+        <p><Link className="inline-flex min-h-11 items-center underline underline-offset-4" href="/origin-data">Origin Data</Link></p>
+      </div>
+      <p>© 2026 · Malaysia</p>
+    </footer>
 
-    {selected && <div className="modal-backdrop" onMouseDown={() => setSelected(null)}><aside className="detail" onMouseDown={(e) => e.stopPropagation()}><button className="close" onClick={() => setSelected(null)} aria-label={t.close}><X/></button><div className="detail-hero" style={{backgroundImage:`linear-gradient(180deg,transparent,rgba(11,28,22,.85)),url('${selected.image}')`}}><span>{selected.category}</span><h2>{lang === "en" ? selected.name : selected.nameMs}</h2><p><MapPin size={16}/>{selected.region}, Pahang</p></div><div className="detail-body"><div className="price-line"><b>{t.rating}: {selected.rating}/5</b><span><Clock3 size={16}/>{selected.hours}</span></div><p>{lang === "en" ? selected.intro : selected.introMs}</p><h3>{t.concern}</h3><p>{selected.concern}</p><h3>{t.activity}</h3><ul>{selected.activities.map(x => <li key={x}>{x}</li>)}</ul><div className="detail-columns"><div><h3>{t.stays}</h3>{selected.stays.map(x => <div className="item" key={x.name}><b>{x.name}</b><span>{x.distance} · {x.price}</span></div>)}</div><div><h3><UtensilsCrossed size={17}/>{t.food}</h3>{selected.food.map(x => <div className="item" key={x.label}><b>{x.label}</b><span>{x.range}</span></div>)}</div></div><h3>{t.getting}</h3><div className="chips">{selected.transport.map(x => <span key={x}>{x}</span>)}</div><a className="map-button" target="_blank" rel="noreferrer" href={`https://www.openstreetmap.org/?mlat=${selected.coordinates[0]}&mlon=${selected.coordinates[1]}#map=14/${selected.coordinates[0]}/${selected.coordinates[1]}`}><MapPin size={18}/>{t.mapLink}<ExternalLink size={15}/></a><small className="disclaimer">{t.indicative}</small></div></aside></div>}
+    {selected && <div className="modal-backdrop" onMouseDown={() => setSelected(null)}>
+      <aside className="detail" onMouseDown={(e) => e.stopPropagation()}>
+        <button className="close" onClick={() => setSelected(null)} aria-label={t.close}><X/></button>
+        <div className="detail-hero" style={{backgroundImage:`linear-gradient(180deg,transparent,rgba(11,28,22,.85)),url('${selected.image}')`}}><span>{selected.category}</span><h2>{lang === "en" ? selected.name : selected.nameMs}</h2><p><MapPin size={16}/>{selected.region}, Pahang</p></div>
+        <div className="detail-body">
+          <div className="price-line"><b>{t.rating}: {selected.rating}/5</b><span><Clock3 size={16}/>{lang === "ms" && selected.visitorInfo ? "Sahkan sebelum lawatan" : selected.hours}</span></div>
+          <p>{lang === "en" ? selected.intro : selected.introMs}</p>
+          {selected.background && <>
+            <h3>{lang === "en" ? "History and background" : "Sejarah dan latar belakang"}</h3>
+            <p>{selected.background[lang]}</p>
+          </>}
+          <h3>{t.concern}</h3><p>{lang === "ms" ? selected.concernMs ?? selected.concern : selected.concern}</p>
+          <h3>{t.activity}</h3>
+          <ul>{(lang === "ms" ? selected.activitiesMs ?? selected.activities : selected.activities).map(x => <li key={x}>{x}</li>)}</ul>
+          {selected.visitorInfo && <>
+            <h3>{lang === "en" ? "Visitor information" : "Maklumat lawatan"}</h3>
+            {selected.visitorInfo.address && <p><b>{lang === "en" ? "Location: " : "Lokasi: "}</b>{selected.visitorInfo.address}</p>}
+            <p>{selected.visitorInfo[lang]}</p>
+            {([
+              ["admission", "Admission listed in the detailed guide", "Bayaran masuk menurut panduan terperinci"],
+              ["facilities", "Facilities", "Kemudahan"],
+              ["nearby", "Nearby attractions", "Tarikan berdekatan"],
+            ] as const).map(([key, en, ms]) => {
+              const items = selected.visitorInfo?.[key]?.[lang];
+              return items?.length ? <section key={key}>
+                <h3>{lang === "en" ? en : ms}</h3>
+                <ul>{items.map(item => <li key={item}>{item}</li>)}</ul>
+              </section> : null;
+            })}
+            {!!selected.visitorInfo.sources?.length && <>
+              <h3>{lang === "en" ? "Sources" : "Sumber"}</h3>
+              <ul>{selected.visitorInfo.sources.map(source => <li key={source.url}>
+                <a className="detail-source" href={source.url} target="_blank" rel="noreferrer">{source[lang]}</a>
+              </li>)}</ul>
+            </>}
+          </>}
+          <div className="detail-columns"><div><h3>{t.stays}</h3>{selected.stays.map(x => <div className="item" key={x.name}><b>{x.name}</b><span>{x.distance} · {x.price}</span></div>)}</div><div><h3><UtensilsCrossed size={17}/>{t.food}</h3>{selected.food.map(x => <div className="item" key={x.label}><b>{x.label}</b><span>{x.range}</span></div>)}</div></div>
+          <h3>{t.getting}</h3><div className="chips">{selected.transport.map(x => <span key={x}>{x}</span>)}</div>
+          <a className="map-button" target="_blank" rel="noreferrer" href={`https://www.openstreetmap.org/?mlat=${selected.coordinates[0]}&mlon=${selected.coordinates[1]}#map=14/${selected.coordinates[0]}/${selected.coordinates[1]}`}><MapPin size={18}/>{t.mapLink}<ExternalLink size={15}/></a>
+          <small className="disclaimer">{t.indicative}</small>
+        </div>
+      </aside>
+    </div>}
   </main>;
 }
