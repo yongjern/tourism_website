@@ -122,6 +122,6 @@ export default function BusJourney() {
 
     <section className="bus-guide section" id="guide"><div className="bus-guide-mark"><BusFront size={44}/><span>BAS.MY</span></div><div><p className="eyebrow light">03 — {t.guide}</p><h2>{t.planning}</h2><p>{t.planningCopy}</p><a className="button gold" href="https://bas.my/basmykuantan.php" target="_blank" rel="noreferrer">{t.check}<ArrowUpRight size={17}/></a></div></section>
 
-    <footer><Link className="brand inverse" href="/"><Image src="/logo-mark.svg" alt="" width={32} height={38}/><span><b>WARISAN</b><small>PAHANG</small></span></Link><p>{t.footer}</p><Link className="footer-back" href="/"><ArrowLeft size={15}/>{t.back}</Link></footer>
+    <footer><Link className="brand inverse" href="/"><Image src="/logo-mark.svg" alt="" width={32} height={38}/><span><b>WARISAN</b><small>PAHANG</small></span></Link><div><p>{t.footer}</p><p><Link className="inline-flex min-h-11 items-center underline underline-offset-4" href="/origin-data">Origin Data</Link></p></div><Link className="footer-back" href="/"><ArrowLeft size={15}/>{t.back}</Link></footer>
   </main>;
 }

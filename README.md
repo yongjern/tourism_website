@@ -33,4 +33,4 @@ Import this folder into Vercel. Environment variables are optional unless broade
 
 ## Data notes
 
-Destination information is curated in `src/data/destinations.ts`. Prices and opening hours are indicative and should be confirmed with each operator before travel. Map links use OpenStreetMap. Remote editorial images are loaded as CSS backgrounds.
+Destination information is curated in `src/data/destinations.ts`. Prices and opening hours are indicative and should be confirmed with each operator before travel. Map links use OpenStreetMap. Verified landmark photos are stored in `public/media` as resized WebP files. The footer links to `/origin-data`, which lists original photo sources, credits, and licenses. Candidate photos without confirmed reuse rights are linked only. Destinations without a verified local photo still use remote editorial backgrounds.
